@@ -1,0 +1,65 @@
+where clause : used to filter and retrieve data.
+________________________________________________________________________________________________________
+
+
+# select * from student;
+ 
+ id  | firstname | lastname | houseno |   phone    |     email      
+-----+-----------+----------+---------+------------+----------------
+  11 | chetan    | kaushik  |     123 | 8755855997 | ckau@gmail.com
+   5 | aman      | dixit    |     234 | 1233211230 | am@gmail.com
+   1 | ajay      | raghav   |     321 | 987874243  | aj@gmail.com
+   2 | ishu      | varsney  |     121 | 9872344243 | ish@gmail.com
+   4 | aman      | asthana  |     111 | 9872122423 | ast@gmail.com
+  17 | vikhil    | kheriwal |     222 | 9872343343 | vik@gmail.com
+ 999 | vishnu    | pande    |     222 | 8872344243 | vish@gmail.com
+(7 rows)
+
+# select * from student where firstname='chetan' and lastname='kaushik';
+
+ id | firstname | lastname | houseno |   phone    |     email      
+----+-----------+----------+---------+------------+----------------
+ 11 | chetan    | kaushik  |     123 | 8755855997 | ckau@gmail.com
+(1 row)
+
+
+# select * from student where id<15;
+
+ id | firstname | lastname | houseno |   phone    |     email      
+----+-----------+----------+---------+------------+----------------
+ 11 | chetan    | kaushik  |     123 | 8755855997 | ckau@gmail.com
+  5 | aman      | dixit    |     234 | 1233211230 | am@gmail.com
+  1 | ajay      | raghav   |     321 | 987874243  | aj@gmail.com
+  2 | ishu      | varsney  |     121 | 9872344243 | ish@gmail.com
+  4 | aman      | asthana  |     111 | 9872122423 | ast@gmail.com
+(5 rows)
+
+
+# select * from student where id<15 AND id >3;
+
+ id | firstname | lastname | houseno |   phone    |     email      
+----+-----------+----------+---------+------------+----------------
+  4 | aman      | asthana  |     111 | 9872122423 | ast@gmail.com
+  5 | aman      | dixit    |     234 | 1233211230 | am@gmail.com
+ 11 | chetan    | kaushik  |     123 | 8755855997 | ckau@gmail.com
+(3 rows)
+
+
+# select * from student where firstname='aman';
+
+ id | firstname | lastname | houseno |   phone    |     email     
+----+-----------+----------+---------+------------+---------------
+  5 | aman      | dixit    |     234 | 1233211230 | am@gmail.com
+  4 | aman      | asthana  |     111 | 9872122423 | ast@gmail.com
+(2 rows)
+
+
+
+# select * from student where id in(1,2,4);
+
+ id | firstname | lastname | houseno |   phone    |     email     
+----+-----------+----------+---------+------------+---------------
+  1 | ajay      | raghav   |     321 | 987874243  | aj@gmail.com
+  2 | ishu      | varsney  |     121 | 9872344243 | ish@gmail.com
+  4 | aman      | asthana  |     111 | 9872122423 | ast@gmail.com
+(3 rows)
