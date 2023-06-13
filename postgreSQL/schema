@@ -1,0 +1,26 @@
+schema :   collection of tables.
+______________________________________
+
+>  PostgreSQL can have multiple databases in each instance.
+
+>  Each database can have multiple schemas.
+
+>  Each schema can have multiple tables.
+
+======================================================================================================
+create schema <schema_name>;
+syntax:
+
+# create schema firstSchema;
+CREATE SCHEMA
+create schema 
+
+
+=======================================================================================================
+drop schema <schema_name>;
+syntax:
+
+# drop schema firstSchema;
+DROP SCHEMA
+
+=======================================================================================================
