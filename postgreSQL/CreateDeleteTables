@@ -1,0 +1,45 @@
+to be create table.
+
+create table <table_name>(
+   var1 <data_type> ,
+   var2 <data_type> ,
+   var3 <data_type> ,
+   var4 <data_type> 
+);
+
+syntax :
+
+school=# create table students(
+              id integer not null,
+              fName text not null,
+              lName text not null,
+              age int not null
+              );
+
+CREATE TABLE
+=======================================================================================================
+'\d' :  To check avaible tables.
+
+school=# \d
+  
+          List of relations
+ Schema |   Name   | Type  |  Owner   
+--------+----------+-------+----------
+ public | students | table | postgres
+(1 row)
+
+=======================================================================================================
+
+TO be delete or drop table.
+
+ drop table <table_name>
+
+ syntax : 
+
+ school=# drop table students;
+
+                       DROP TABLE
+                       
+    school=# \d                   --to check avaible table 
+    not find any relations.
+
