@@ -1,0 +1,16 @@
+UPDATE :  
+
+ command is used to change the present records in a table.
+ To update the selected rows, we have to use the WHERE clause; 
+ otherwise, all rows would be updated.
+
+ syntax:
+
+             UPDATE table_name    
+             SET column1 = value1,   
+             column2 = value2....,   
+             columnN = valueN    
+             WHERE  condition;    
+________________________________________________________________________________________________________
+
+
