@@ -1,0 +1,74 @@
+TO be insert value in table.
+
+insert into <table_name>(col1,col2,col3,..,coln)
+values(val1,val2,val3,..,valn);
+
+syntax :
+
+ insert into student(id,firstname,lastname,houseno,phone,email)
+values(11,'chetan','kaushik',123,8755855997,'ckau@gmail.com');
+
+
+# select * from student;
+
+ id | firstname | lastname | houseno |   phone    |     email      
+----+-----------+----------+---------+------------+----------------
+ 11 | chetan    | kaushik  |     123 | 8755855997 | ckau@gmail.com
+
+(1 row)
+
+=======================================================================================================
+insert into <table_name>  values(val1,val2,val3,..,valn);
+
+
+syntax : 
+
+
+# insert into student values(5,'aman','dixit',234,'1233211230','am@gmail.com');
+INSERT 0 1
+
+# select * from student;
+
+ id | firstname | lastname | houseno |   phone    |     email      
+----+-----------+----------+---------+------------+----------------
+ 11 | chetan    | kaushik  |     123 | 8755855997 | ckau@gmail.com
+  5 | aman      | dixit    |     234 | 1233211230 | am@gmail.com
+(2 rows)
+
+=====================================================================================================
+
+To be insert multiple values at a time.
+
+
+insert into <table_name>(col1,col2,col3,..,coln)
+                  values(val1,val2,val3,..,valn),
+                        .
+                        .
+                        .
+                        (val1,val2,val3,..,valn);
+
+
+syntax:
+
+# insert into student(id,firstname,lastname,houseno,phone,email)
+values(2,'ishu','varsney',121,'9872344243','ish@gmail.com'),
+(4,'aman','asthana',111,'9872122423','ast@gmail.com'),
+(17,'vikhil','kheriwal',222,'9872343343','vik@gmail.com'),
+(999,'vishnu','pande',222,'8872344243','vish@gmail.com');
+INSERT 0 4
+
+# select * from student;
+
+
+ id  | firstname | lastname | houseno |   phone    |     email      
+-----+-----------+----------+---------+------------+----------------
+  11 | chetan    | kaushik  |     123 | 8755855997 | ckau@gmail.com
+   5 | aman      | dixit    |     234 | 1233211230 | am@gmail.com
+   1 | ajay      | raghav   |     321 | 987874243  | aj@gmail.com
+   2 | ishu      | varsney  |     121 | 9872344243 | ish@gmail.com
+   4 | aman      | asthana  |     111 | 9872122423 | ast@gmail.com
+  17 | vikhil    | kheriwal |     222 | 9872343343 | vik@gmail.com
+ 999 | vishnu    | pande    |     222 | 8872344243 | vish@gmail.com
+(7 rows)
+
+=========================================================================================================
