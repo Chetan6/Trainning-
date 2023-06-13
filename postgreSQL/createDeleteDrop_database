@@ -1,0 +1,41 @@
+\l :  to see avaible databases.
+
+syntax:
+
+postgres=# \l
+                             List of databases
+   Name    |  Owner   | Encoding | Collate | Ctype |   Access privileges   
+-----------+----------+----------+---------+-------+-----------------------
+ demo      | postgres | UTF8     | en_IN   | en_IN | 
+ postgres  | postgres | UTF8     | en_IN   | en_IN | 
+ template0 | postgres | UTF8     | en_IN   | en_IN | =c/postgres          +
+
+======================================================================================================
+
+  create database <database_Name>;
+syntax:
+
+postgres=# create database school;
+CREATE DATABASE
+                                               --see the database using '\l'
+======================================================================================================
+To see and connect with other database.
+
+\c <database_name>;
+syntax : 
+
+postgres=# \c school;
+--You are now connected to database "school" as user "postgres".
+school=# 
+
+======================================================================================================
+
+we cann,t remove a database using itself.   --initially switch in another database then drop.
+  
+  Drop database <database_name>;
+syntax:
+
+demo=# drop database school;
+DROP DATABASE
+
+======================================================================================================
