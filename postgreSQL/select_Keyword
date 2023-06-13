@@ -1,0 +1,59 @@
+select :  list that can be a column 
+                                         or
+           a list of columns in a table from which you want to retrieve data.
+___________________________________________________________________________________________________
+
+SELECT
+   select_list
+FROM
+   table_name;
+
+====================================================================================================
+
+
+# select * from student;
+
+ id  | firstname | lastname | houseno |   phone    |     email      
+-----+-----------+----------+---------+------------+----------------
+  11 | chetan    | kaushik  |     123 | 8755855997 | ckau@gmail.com
+   5 | aman      | dixit    |     234 | 1233211230 | am@gmail.com
+   1 | ajay      | raghav   |     321 | 987874243  | aj@gmail.com
+   2 | ishu      | varsney  |     121 | 9872344243 | ish@gmail.com
+   4 | aman      | asthana  |     111 | 9872122423 | ast@gmail.com
+  17 | vikhil    | kheriwal |     222 | 9872343343 | vik@gmail.com
+ 999 | vishnu    | pande    |     222 | 8872344243 | vish@gmail.com
+(7 rows)
+
+# select id ,firstname,phone from student;
+
+ id  | firstname |   phone    
+-----+-----------+------------
+  11 | chetan    | 8755855997
+   5 | aman      | 1233211230
+   1 | ajay      | 987874243
+   2 | ishu      | 9872344243
+   4 | aman      | 9872122423
+  17 | vikhil    | 9872343343
+ 999 | vishnu    | 8872344243
+(7 rows)
+
+===================================================================================================
+ \d <table_name>   :  used to know the table structure,
+___________________________________________________________________________________________________
+ syntax :             
+
+# \d student    
+
+                                     Table "public.student"
+  Column   |          Type          | Collation | Nullable |               Default               
+-----------+------------------------+-----------+----------+-------------------------------------
+ id        | integer                |           | not null | nextval('student_id_seq'::regclass)
+ firstname | character varying(50)  |           | not null | 
+ lastname  | character varying(50)  |           | not null | 
+ houseno   | integer                |           |          | 
+ phone     | character varying(255) |           | not null | 
+ email     | character varying(50)  |           |          | 
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (id)
+    "student_email_key" UNIQUE CONSTRAINT, btree (email)
+    "student_phone_key" UNIQUE CONSTRAINT, btree (phone)
