@@ -1,0 +1,160 @@
+
+flight_mgmt_system
+
+# \d
+
+            List of relations
+
+ Schema |    Name     | Type  |  Owner   
+--------+-------------+-------+----------
+ public | aircraft    | table | postgres
+ public | airport     | table | postgres
+ public | booking     | table | postgres
+ public | flight      | table | postgres
+ public | passanger   | table | postgres
+ public | seat_assign | table | postgres
+(6 rows)
+
+
+
+
+                        Table "public.airport"
+
+    Column    |         Type          | Collation | Nullable | Default 
+--------------+-----------------------+-----------+----------+---------
+ airport_name | character varying(20) |           | not null | 
+ state        | character varying(20) |           | not null | 
+ city_name    | character varying(20) |           | not null | 
+ country      | character varying(20) |           | not null | 
+
+Indexes:
+
+    "airport_pkey" PRIMARY KEY, btree (airport_name)
+Referenced by:
+    TABLE "flight" CONSTRAINT "flight_ref" FOREIGN KEY (airport_name) REFERENCES airport(airport_name)
+=======================================================================================================
+
+                        Table "public.flight"
+
+    Column    |         Type          | Collation | Nullable | Default 
+--------------+-----------------------+-----------+----------+---------
+ flight_id    | integer               |           | not null | 
+ source       | character varying(50) |           | not null | 
+ destination  | character varying(50) |           | not null | 
+ flight_date  | date                  |           | not null | 
+ flight_time  | text                  |           | not null | 
+ departure    | text                  |           | not null | 
+ arrival      | text                  |           | not null | 
+ airport_name | character varying(20) |           |          | 
+
+Indexes:
+
+    "flight_pkey" PRIMARY KEY, btree (flight_id)
+Foreign-key constraints:
+    "flight_ref" FOREIGN KEY (airport_name) REFERENCES airport(airport_name)
+
+Referenced by:
+    TABLE "aircraft" CONSTRAINT "aircraft_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+    TABLE "booking" CONSTRAINT "booking_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+    TABLE "seat_assign" CONSTRAINT "seat_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+
+========================================================================================================
+
+                     Table "public.aircraft"
+
+    Column     |         Type          | Collation | Nullable | Default 
+---------------+-----------------------+-----------+----------+---------
+ aircraft_id   | integer               |           | not null | 
+ aircraft_name | character varying(20) |           | not null | 
+ aircraft_type | character varying(20) |           | not null | 
+ capacity      | text                  |           | not null | 
+ flight_id     | integer               |           |          | 
+
+Indexes:
+    "aircraft_pkey" PRIMARY KEY, btree (aircraft_id)
+Foreign-key constraints:
+    "aircraft_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+
+========================================================================================================
+
+                      Table "public.passanger"
+
+   Column    |         Type          | Collation | Nullable | Default 
+-------------+-----------------------+-----------+----------+---------
+ id          | integer               |           | not null | 
+ firstname   | character varying(30) |           | not null | 
+ lastname    | character varying(30) |           | not null | 
+ address     | text                  |           | not null | 
+ age         | integer               |           | not null | 
+ gender      | character varying(1)  |           | not null | 
+ phone       | integer               |           |          | 
+ email       | text                  |           | not null | 
+ passport_no | integer               |           | not null | 
+ flight_id   | integer               |           |          | 
+
+Indexes:
+    "passanger_pkey" PRIMARY KEY, btree (id)
+Check constraints:
+    "passanger_phone_check" CHECK (phone > 1000000000 AND phone < '10000000000'::bigint)
+
+========================================================================================================
+
+                    Table "public.seat_assign"
+  Column   |         Type          | Collation | Nullable | Default 
+-----------+-----------------------+-----------+----------+---------
+ seat_id   | integer               |           | not null | 
+ class     | character varying(10) |           |          | 
+ flight_id | integer               |           |          | 
+
+Indexes:
+    "seat_assign_pkey" PRIMARY KEY, btree (seat_id)
+Foreign-key constraints:
+    "seat_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+
+=========================================================================================================
+
+flightmgmtsystem-# psql \d booking;
+                         Table "public.booking"
+     Column     |         Type          | Collation | Nullable | Default 
+----------------+-----------------------+-----------+----------+---------
+ ticket_id      | integer               |           | not null | 
+ source         | character varying(20) |           | not null | 
+ destination    | character varying(20) |           | not null | 
+ class          | character varying(20) |           | not null | 
+ flight_id      | integer               |           | not null | 
+ date           | date                  |           |          | 
+ time           | text                  |           | not null | 
+ seat_no        | integer               |           | not null | 
+ passanger_name | character varying(20) |           |          | 
+
+Indexes:
+    "booking_pkey" PRIMARY KEY, btree (ticket_id)
+Foreign-key constraints:
+    "booking_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+
+========================================================================================================
+airport ->
+________________________________________________________________
+
+    airport_name     |   state    | city_name  | country 
+----------------------+------------+------------+---------
+ Indira Gandhi        | delhi      | delhi      | India
+ Chhatrapati Shivaji  | maharasta  | mumbai     | India
+ chennai in           | tamilnadu  | chennai    | India
+ Dabolim              | goa        | goa        | India
+  Veer Savarkar       | port blair | port blair | India
+(5 rows)
+
+========================================================================================================
+flight--
+_______________________________________________________________________________________________________
+
+flight_id |   source   | destination | flight_date | flight_time | departure | arrival | airport_name 
+-----------+------------+-------------+-------------+-------------+-----------+---------+--------------
+       143 | maharasta  | delhi       | 2023-08-15  | 10:05       | 10:17     | 12:45   | 
+       713 | goa        | maharasta   | 2023-06-19  | 11:05       | 11:17     | 14:45   | 
+        17 | delhi      | tamilnadu   | 2023-06-15  | 12:05       | 12:20     | 14:23   | 
+       112 | port blair | goa         | 2023-06-21  | 14:08       | 14:18     | 19:00   | 
+       210 | maharasta  | shrinagar   | 2023-08-23  | 06:11       | 06:15     | 10:18   | 
+       910 | chennai    | shrinagar   | 2023-07-22  | 02:05       | 02:30     | 05:45   | 
+(6 rows)
