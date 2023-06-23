@@ -1,0 +1,103 @@
+hotel_mgmt_system=# \d
+
+            List of relations
+
+ Schema |    Name     | Type  |  Owner   
+--------+-------------+-------+----------
+ public | customer    | table | postgres
+ public | employee    | table | postgres
+ public | hotel       | table | postgres
+ public | payment     | table | postgres
+ public | room        | table | postgres
+ public | today_price | table | postgres
+ public | visit       | table | postgres
+(7 rows)
+
+==================================================================================
+
+
+# \d customer
+                       Table "public.customer"
+   Column   |         Type          | Collation | Nullable | Default 
+------------+-----------------------+-----------+----------+---------
+ cust_id    | integer               |           | not null | 
+ age        | integer               |           | not null | 
+ pincode    | integer               |           | not null | 
+ state      | character varying(20) |           | not null | 
+ city       | character varying(20) |           | not null | 
+ dob        | date                  |           | not null | 
+ first_name | character varying(20) |           | not null | 
+ last_name  | character varying(20) |           | not null | 
+ mobile     | integer               |           | not null | 
+Indexes:
+    "customer_pkey" PRIMARY KEY, btree (cust_id)
+
+
+# \d employee
+                         Table "public.employee"
+     Column      |         Type          | Collation | Nullable | Default 
+-----------------+-----------------------+-----------+----------+---------
+ emp_id          | integer               |           | not null | 
+ name            | character varying(20) |           | not null | 
+ mobile          | integer               |           |          | 
+ address         | text                  |           | not null | 
+ job_description | text                  |           | not null | 
+ id              | integer               |           | not null | 
+Indexes:
+    "employee_pkey" PRIMARY KEY, btree (emp_id)
+Check constraints:
+    "employee_mobile_check" CHECK (mobile > 1000000000)
+
+
+# \d hotel
+                       Table "public.hotel"
+  Column  |         Type          | Collation | Nullable | Default 
+----------+-----------------------+-----------+----------+---------
+ id       | integer               |           | not null | 
+ location | text                  |           | not null | 
+ name     | character varying(20) |           | not null | 
+Indexes:
+    "hotel_pkey" PRIMARY KEY, btree (id)
+
+
+# \d payment
+               Table "public.payment"
+  Column  |  Type   | Collation | Nullable | Default 
+----------+---------+-----------+----------+---------
+ pay_date | date    |           | not null | 
+ ammount  | numeric |           | not null | 
+ cust_id  | integer |           | not null | 
+
+
+# \d room
+                 Table "public.room"
+  Column   |  Type   | Collation | Nullable | Default 
+-----------+---------+-----------+----------+---------
+ room_no   | integer |           | not null | 
+ room_type | text    |           | not null | 
+ status    | text    |           | not null | 
+ id        | integer |           | not null | 
+Indexes:
+    "room_pkey" PRIMARY KEY, btree (room_no)
+
+
+# \d today_price
+                       Table "public.today_price"
+    Column    |          Type          | Collation | Nullable | Default 
+--------------+------------------------+-----------+----------+---------
+ avaible_room | integer                |           | not null | 
+ price        | integer                |           | not null | 
+ check_in     | time without time zone |           | not null | 
+ check_out    | time without time zone |           | not null | 
+ cust_id      | integer                |           | not null | 
+Indexes:
+    "today_price_pkey" PRIMARY KEY, btree (avaible_room)
+
+
+# \d visit
+                Table "public.visit"
+ Column  |  Type   | Collation | Nullable | Default 
+---------+---------+-----------+----------+---------
+ cust_id | integer |           | not null | 
+ room_no | integer |           | not null | 
+
