@@ -1,0 +1,209 @@
+
+flightmgmtsystem=# \d
+            List of relations
+ Schema |    Name     | Type  |  Owner   
+--------+-------------+-------+----------
+ public | aircraft    | table | postgres
+ public | airport     | table | postgres
+ public | booking     | table | postgres
+ public | flight      | table | postgres
+ public | passanger   | table | postgres
+ public | seat_assign | table | postgres
+(6 rows)
+
+# \d airport
+
+                      Table "public.airport"
+
+ Column  |         Type          | Collation | Nullable | Default 
+---------+-----------------------+-----------+----------+---------
+ name    | character varying(20) |           | not null | 
+ state   | character varying(20) |           | not null | 
+ city    | character varying(20) |           | not null | 
+ country | character varying(20) |           | not null | 
+Indexes:
+    "airport_pkey" PRIMARY KEY, btree (name)
+Referenced by:
+    TABLE "flight" CONSTRAINT "flight_ref" FOREIGN KEY (name) REFERENCES airport(name)
+
+# \d flight;
+
+                          Table "public.flight"
+
+     Column     |         Type          | Collation | Nullable | Default 
+----------------+-----------------------+-----------+----------+---------
+ flight_id      | integer               |           | not null | 
+ date           | date                  |           | not null | 
+ time           | text                  |           | not null | 
+ departure      | text                  |           | not null | 
+ arrival        | text                  |           | not null | 
+ name           | character varying(20) |           |          | 
+ aircraft_id    | integer               |           |          | 
+ distance       | numeric               |           |          | 
+ fare           | integer               |           |          | 
+ status         | character varying(20) |           |          | 
+ source_id      | integer               |           |          | 
+ destination_id | integer               |           |          | 
+
+Indexes:
+    "flight_pkey" PRIMARY KEY, btree (flight_id)
+Foreign-key constraints:
+    "aircraft_ref" FOREIGN KEY (aircraft_id) REFERENCES aircraft(aircraft_id)
+    "flight_ref" FOREIGN KEY (name) REFERENCES airport(name)
+Referenced by:
+    TABLE "booking" CONSTRAINT "booking_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+    TABLE "seat_assign" CONSTRAINT "seat_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+
+# \d aircraft;
+
+                       Table "public.aircraft"
+
+   Column    |         Type          | Collation | Nullable | Default 
+-------------+-----------------------+-----------+----------+---------
+ aircraft_id | integer               |           | not null | 
+ name        | character varying(20) |           | not null | 
+ type        | character varying(20) |           | not null | 
+ capacity    | integer               |           |          | 
+Indexes:
+    "aircraft_pkey" PRIMARY KEY, btree (aircraft_id)
+Referenced by:
+    TABLE "flight" CONSTRAINT "aircraft_ref" FOREIGN KEY (aircraft_id) REFERENCES aircraft(aircraft_id)
+
+# \d booking;
+
+                         Table "public.booking"
+
+     Column     |         Type          | Collation | Nullable | Default 
+----------------+-----------------------+-----------+----------+---------
+ ticket_id      | integer               |           | not null | 
+ source         | character varying(20) |           | not null | 
+ destination    | character varying(20) |           | not null | 
+ class          | character varying(20) |           | not null | 
+ flight_id      | integer               |           | not null | 
+ date           | date                  |           |          | 
+ time           | text                  |           | not null | 
+ seat_no        | integer               |           | not null | 
+ passanger_name | character varying(20) |           |          | 
+ passanger_id   | integer               |           |          | 
+Indexes:
+    "booking_pkey" PRIMARY KEY, btree (ticket_id)
+Foreign-key constraints:
+    "booking_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+    "passanger_ref" FOREIGN KEY (passanger_id) REFERENCES passanger(passanger_id)
+Referenced by:
+    TABLE "seat_assign" CONSTRAINT "booking_ref" FOREIGN KEY (ticket_id) REFERENCES booking(ticket_id)
+
+# \d passanger;
+
+                       Table "public.passanger"
+
+    Column    |         Type          | Collation | Nullable | Default 
+--------------+-----------------------+-----------+----------+---------
+ passanger_id | integer               |           | not null | 
+ firstname    | character varying(30) |           | not null | 
+ lastname     | character varying(30) |           | not null | 
+ address      | text                  |           | not null | 
+ age          | integer               |           | not null | 
+ gender       | character varying(1)  |           | not null | 
+ phone        | integer               |           |          | 
+ email        | text                  |           | not null | 
+ passport_no  | integer               |           | not null | 
+Indexes:
+    "passanger_pkey" PRIMARY KEY, btree (passanger_id)
+Referenced by:
+    TABLE "booking" CONSTRAINT "passanger_ref" FOREIGN KEY (passanger_id) REFERENCES passanger(passanger_id)
+    TABLE "seat_assign" CONSTRAINT "passanger_ref" FOREIGN KEY (passanger_id) REFERENCES passanger(passanger_id)
+
+# \d seat_assign;
+
+                       Table "public.seat_assign"
+
+     Column     |         Type          | Collation | Nullable | Default 
+----------------+-----------------------+-----------+----------+---------
+ seat_id        | integer               |           | not null | 
+ class          | character varying(10) |           |          | 
+ flight_id      | integer               |           |          | 
+ passanger_id   | integer               |           |          | 
+ ticket_id      | integer               |           |          | 
+ passanger_name | character varying(20) |           |          | 
+Indexes:
+    "seat_assign_pkey" PRIMARY KEY, btree (seat_id)
+Foreign-key constraints:
+    "booking_ref" FOREIGN KEY (ticket_id) REFERENCES booking(ticket_id)
+    "passanger_ref" FOREIGN KEY (passanger_id) REFERENCES passanger(passanger_id)
+    "seat_ref" FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+
+
+
+# select * from airport;
+
+         name         |   state    |    city    | country 
+----------------------+------------+------------+---------
+ Indira Gandhi        | delhi      | delhi      | India
+ Chhatrapati Shivaji  | maharasta  | mumbai     | India
+ chennai in           | tamilnadu  | chennai    | India
+ Dabolim              | goa        | goa        | India
+  Veer Savarkar       | port blair | port blair | India
+ Chhatrapati Shivaji  | maharasta  | mumbai     | India
+(6 rows)
+
+flightmgmtsystem=# select * from flight;
+# select * from flight;
+
+ flight_id |    date    | time  | departure | arrival |         name         | aircraft_id | distance | fare | status  | source_id | destination_id 
+-----------+------------+-------+-----------+---------+----------------------+-------------+----------+------+---------+-----------+----------------
+       143 | 2023-08-15 | 10:05 | 10:17     | 12:45   | Indira Gandhi        |           1 |      560 | 2000 | on time |         1 |              6
+       210 | 2023-08-23 | 06:11 | 06:15     | 10:18   | Chhatrapati Shivaji  |           6 |      750 | 1800 | on time |         2 |              5
+       713 | 2023-06-19 | 11:05 | 11:17     | 14:45   |  Veer Savarkar       |           5 |      700 | 1800 | cancel  |         6 |              4
+       910 | 2023-07-22 | 02:05 | 02:30     | 05:45   | Dabolim              |           4 |      780 | 2100 | delay   |         5 |              3
+        17 | 2023-06-15 | 12:05 | 12:20     | 14:23   | Chhatrapati Shivaji  |           2 |      650 | 2500 | on time |         3 |              2
+       112 | 2023-06-21 | 14:08 | 14:18     | 19:00   | chennai in           |           3 |      550 | 2100 | delay   |         4 |              1
+(6 rows)
+
+# select * from aircraft;
+
+ aircraft_id |       name        |    type     | capacity 
+-------------+-------------------+-------------+----------
+           1 | Aerodrome         | Airbus A320 |      250
+           4 | Aluminum Overcast | Airbus A320 |      200
+           6 | Bremen            | Airbus A320 |      250
+           2 | Airbus A340-300   |  Boeing 737 |      300
+           3 | Akutan Zero       |  Boeing 737 |      300
+           5 | Bird of Paradise  |  Boeing 737 |      300
+(6 rows)
+
+# select * from booking;
+
+ ticket_id |   source    | destination |  class   | flight_id |    date    |  time  | seat_no | passanger_name | passanger_id 
+-----------+-------------+-------------+----------+-----------+------------+--------+---------+----------------+--------------
+         1 | maharasta   | delhi       | Business |       143 | 2023-08-15 | 10:05  |     101 | chetan         |            1
+        11 | delhi       | tamilnadu   | General  |        17 | 2023-06-15 | 12:05  |     102 | manish         |            2
+       111 |  port blair | goa         | General  |       112 | 2023-06-21 | 14:08  |     104 | virat          |            3
+         2 | chennai     | shrinagar   | Business |       910 | 2023-07-22 | 02:05  |     114 | sarika         |            4
+        22 | goa         |  maharasta  | Business |       713 | 2023-06-19 | 11:05  |     115 | dipika         |            5
+       222 | maharasta   | shrinagar   | General  |       210 | 2023-08-23 |  06:11 |     120 | aman           |            6
+(6 rows)
+
+# select * from passanger;
+
+ passanger_id | firstname | lastname |   address   | age | gender | phone  |       email        | passport_no 
+--------------+-----------+----------+-------------+-----+--------+--------+--------------------+-------------
+            1 | Chetan    | Kaushik  | Mathura     |  23 | M      | 875585 | ckaushik@gmail.com |          11
+            2 | Manish    | Kaushik  | Mathura     |  25 | M      | 897951 | mkaushik@gmail.com |          13
+            3 | virat     | Kohli    | delhi       |  30 | M      | 101010 | kohli@gmail.com    |          15
+            4 | sarika    | sahu     | allahbad    |  24 | F      | 767349 | sahu@gmail.com     |          17
+            5 | dipika    | agrawal  | delhi       |  26 | F      | 897349 | dipika@gmail.com   |          19
+            6 | Aman      | dixit    | radha puram |  24 | M      | 123349 | dixit@gmail.com    |          20
+(6 rows)
+
+# select * from seat_assign;
+
+ seat_id |  class   | flight_id | passanger_id | ticket_id | passanger_name 
+---------+----------+-----------+--------------+-----------+----------------
+     101 | Business |       143 |            1 |         1 | chetan
+     102 | General  |        17 |            2 |        11 | manish
+     104 | Business |       112 |            3 |       111 | virat
+     114 | Business |       910 |            4 |         2 | sarika
+     115 | Business |       713 |            5 |        22 | dipika
+     120 | General  |       210 |            6 |       222 | Aman
+(6 rows)
