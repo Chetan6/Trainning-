@@ -1,0 +1,472 @@
+
+
+
+
+
+--Retrieve the details of all passengers who have booked a ticket with a phone number starting with "89".-----------
+
+
+
+
+
+
+.
+
+
+
+--Retrieve the details of all passengers who have booked a ticket with an age greater than 25.
+
+
+Please note that you may need to modify the column names and values based on your specific table structure and data.
+
+=============================================================================================================================
+
+SOLUTION:
+_______________________________________________________________________
+1-  --Retrieve the details of all bookings made for the flight with flight_id 143.
+
+SELECT *
+FROM booking
+WHERE flight_id = 143;
+_______________________________________________________________________
+2-   --Retrieve the count of bookings made for each class (Business, General) of tickets.
+
+SELECT class, COUNT(*) AS booking_count
+FROM booking
+GROUP BY class;
+_______________________________________________________________________
+3-  --Retrieve the details of all passengers who have booked a ticket from "maharasta" to "delhi".
+
+
+SELECT p.*
+FROM booking b
+JOIN passanger p ON b.passanger_id = p.passanger_id
+WHERE b.source = 'maharasta' AND b.destination = 'delhi';
+
+OR
+
+ SELECT * from passanger 
+ where passanger_id = (
+                       select passanger_id from booking 
+                       where source='maharasta' and destination='delhi'
+                       );
+_______________________________________________________________________
+
+4-  --Retrieve the details of all passengers who have booked a ticket for a flight departing on or after July 1, 2023.
+
+
+
+select p.firstname,p.lastname,p.address,p.age,p.gender,p.email 
+from passanger p 
+inner join booking b
+on p.passanger_id=b.passanger_id
+where b.date>'1 july 2023';
+
+OR 
+
+ select * from passanger
+  where passanger_id in 
+  (select passanger_id from booking 
+ where date >'1 july 2023' or date='1 july 2023');
+
+ OR 
+
+SELECT p.*
+FROM booking b
+JOIN passanger p ON b.passanger_id = p.passanger_id
+WHERE b.date >= '2023-07-01';
+
+________________________________________________________________________
+
+5---Retrieve the total number of tickets booked for each destination.
+
+SELECT destination, COUNT(*) AS total_tickets
+FROM booking
+GROUP BY destination;
+
+________________________________________________________________________
+
+6-----
+--Retrieve the average age of passengers for each class of tickets (Business, General).
+
+            from(booking and flight table data is fetched)
+________________________________________________________________________
+ select b.class,avg(f.fare) as AVG_FARE 
+ from booking b
+ inner join flight f 
+ on f.flight_id=b.flight_id 
+ group by b.class;
+
+ OR 
+               (booking and passanger table data is fetched )
+select b.class ,avg(p.age) from booking b inner join passanger p on p.passanger_id=b.passanger_id group by b.class;
+
+
+__________________________________________________________________________________________________________________
+
+7------Retrieve the details of all passengers who have booked a ticket for a flight departing from "goa".
+
+select * from passanger where passanger_id =(select passanger_id from booking where source='goa');  
+
+OR
+
+select p.* from passanger p inner join booking b on p.passanger_id=b.passanger_id where b.source='goa'; 
+
+OR 
+
+_______________________________________________________________________________________________________________
+
+8-
+
+SELECT p.*
+FROM booking b
+JOIN passanger p ON b.passanger_id = p.passanger_id
+WHERE p.phone LIKE '89%';
+_____________________________________________________________________________________________________________
+
+9- --Retrieve the details of all passengers who have booked a ticket for a flight departing in August 2023. 
+
+ select p.* from booking b
+ inner join passanger p 
+ on b.passanger_id=p.passanger_id 
+ 
+ inner join flight f
+ on f.flight_id =b.flight_id 
+ where f.date between '1 july 2023' and '1 aug 2023';
+
+OR 
+
+SELECT p.*
+FROM booking b
+JOIN passanger p ON b.passanger_id = p.passanger_id
+WHERE b.date >= '2023-08-01' AND b.date < '2023-09-01';
+
+_____________________________________________________________________________________________________________
+
+10---Retrieve the count of bookings made for each source city (maharasta, delhi, port blair, chennai, goa).
+
+SELECT source,count(*) from booking group by source;
+
+OR 
+
+SELECT source, COUNT(*) AS booking_count
+FROM booking
+WHERE source IN ('maharasta', 'delhi', 'port blair', 'chennai', 'goa')
+GROUP BY source;
+___________________________________________________________________________________________________________
+
+11-Retrieve the details of all passengers who have booked a ticket with a passport number greater than or equal to 15.
+
+SELECT p.*
+FROM booking b
+JOIN passanger p ON b.passanger_id = p.passanger_id
+WHERE p.passport_number >= 15;
+
+OR
+
+ select * from passanger where passport_no>=15;
+
+ ___________________________________________________________________________________________________________
+
+ 12- Retrieve the total revenue generated by each flight.
+
+ SELECT flight_id, SUM(revenue) AS total_revenue
+FROM booking
+GROUP BY flight_id;
+
+OR 
+
+++
+
+________________________________________________________________________________________________________________
+
+13--- Retrieve the details of all passengers who have booked a ticket for a flight with a seat_id in the range of 100-110
+
+select p.* from passanger p
+inner join seat_assign sa 
+on sa.passanger_id=p.passanger_id
+where sa.seat_id>=100 and sa.seat_id<111;
+
+
+______________________________________________________________________________________________________________
+
+14--- Retrieve the details of all passengers who have booked a ticket with an age greater than 25;
+
+ select * from passanger where age>25;
+
+ OR 
+
+ ____________________________________________________________________________________________________________
+
+15---Retrieve the details of all passengers who have booked a ticket for a flight with a seat in Business class.
+
+ select p.* from passanger p inner join booking b on b.passanger_id=p.passanger_id where b.class='Business';
+
+OR 
+
+select * from passanger where passanger_id in(select passanger_id from booking where class ='Business');
+
+________________________________________________________________________________________________________________
+
+16-----Retrieve the details of all passengers who have booked a ticket with a passanger_name containing the letter "i"
+
+select * from passanger where passanger_id in (select passanger_id from booking where passanger_name like '%i%');
+
+OR 
+
+ select p.* from passanger p inner join booking b on p.passanger_id=b.passanger_id where b.passanger_name ilike '%i%'; 
+
+
+ __________________________________________________________________________________________________________________
+
+17----Retrieve the details of all passengers who have booked a ticket with an email address ending with "@gmail.com".
+
+ select * from passanger where email like '%.com';
+
+ OR 
+
+________________________________________________________________________________________________________________
+
+18-----Retrieve the details of all passengers who have booked a ticket for a flight with a time of departure in the afternoon (12:00 PM - 6:00 PM).
+
+ select p.*,f.departure from booking b 
+ 
+ inner join passanger p 
+ on p.passanger_id=b.passanger_id 
+
+ inner join flight f 
+ on b.flight_id=f.flight_id 
+ 
+ where f.departure between '12:00' and '18:00';
+
+
+OR 
+
+select * from passanger 
+where passanger_id in (select passanger_id from booking 
+                       where flight_id in (select flight_id from flight 
+                                           where departure between '12:00' and '18:00'));
+
+____________________________________________________________________________________________________________________________
+
+19------Retrieve the count of bookings made for each gender (M, F).
+
+select p.gender,count(b.*) from booking b
+inner join passanger p 
+on p.passanger_id=b.passanger_id 
+group by p.gender;
+
+OR 
+
+____________________________________________________________________________________________________________________________
+
+20- ----Retrieve the details of all passengers who have booked a ticket for a flight with a distance greater than 500 miles.
+
+OR 
+
+select p.*,f.distance from booking b 
+inner join passanger p 
+on  b.passanger_id=p.passanger_id 
+
+inner join flight f 
+on f.flight_id=b.flight_id 
+
+where f.distance>600;
+
+
+_____________________________________________________________________________________________________________________________
+
+21----Get the highest fare among all flights.
+
+select max(fare) as fare from flight;
+
+OR 
+
+___________________________________________________________________________________________________________________________________
+
+22----Get the total distance covered by each aircraft type.
+
+
+# select a.type ,sum(f.distance) from aircraft a inner join flight f on a.aircraft_id=f.aircraft_id group by a.type;    
+
+    type     | sum  
+-------------+------
+ Airbus A320 | 2090
+  Boeing 737 | 1900
+(2 rows)
+
+______________________________________________________________________________________________________________________________
+
+22--Retrieve the details of passengers who have booked a ticket for a flight with a fare higher than the average fare of all flights.
+
+ select * from passanger 
+ where passanger_id in (select passanger_id from booking 
+                        where flight_id in  (select flight_id from flight 
+                                             where fare> (select avg(fare) from flight )));
+
+OR
+
+________________________________________________________________________________________________________________________________
+23--Get the names of passengers who have booked a ticket for a flight that is departing from the same airport as their destination.
+
+select p.firstname,p.lastname,b1.ticket_id,b1.date,b1.class 
+from booking b1 
+inner join passanger p 
+on p.passanger_id=b1.passanger_id
+
+inner join booking b2 
+on b1.source=b2.destination and b1.ticket_id=b2.ticket_id;
+
+OR 
+
+ select firstname,lastname 
+ from passanger 
+ where passanger_id in (
+                          select b1.passanger_id 
+                          from booking b1 
+                          inner join booking b2 
+                          on b1.source=b2.destination  and b1.ticket_id=b2.ticket_id
+              );
+_____________________________________________________________________________________________________________________________________
+
+24--Retrieve the details of passengers who have booked a ticket for a flight with the highest fare.
+
+select p.*,f.fare 
+from booking b 
+inner join passanger p 
+on p.passanger_id=b.passanger_id   
+
+inner join flight f 
+on f.flight_id=b.flight_id 
+where f.fare=(select max(fare) from flight);
+
+_____________________________________________________________________________________________________________________________________
+
+25--Get the average fare of flights that have more than 100 bookings.
+
+SELECT AVG(fare) AS average_fare
+FROM flight
+WHERE flight_id IN (
+  SELECT flight_id
+  FROM booking
+  GROUP BY flight_id
+  HAVING COUNT(*) > 100
+);
+
+OR 
+
+
+
+___________________________________________________________________________________________________________________________________________________
+26--Retrieve the details of passengers who have booked a ticket for a flight with a fare higher than the fare of 
+any flight departing from a specific airport.
+
+
+ans-
+
+SELECT p.*
+FROM passanger p
+JOIN booking b ON p.passanger_id = b.passanger_id
+JOIN flight f ON b.flight_id = f.flight_id
+WHERE f.fare > (
+  SELECT MAX(fare)
+  FROM flight
+  WHERE source = 'specific_airport'
+);
+________________________________________________________________________________________________________________________________________________________
+27--Get the number of passengers who have booked a ticket for a flight with a fare lower than the average fare of flights departing from the same airport.
+===
+select p.passanger_id,count(p.*), p.firstname 
+from booking b 
+inner join passanger p 
+on p.passanger_id =b.passanger_id 
+
+inner join flight f 
+on f.flight_id=b.flight_id 
+
+where f.fare < (select avg(fare) from flight) group by p.passanger_id; 
+
+OR 
+
+SELECT COUNT(DISTINCT p.passanger_id) AS passenger_count
+FROM passanger p
+JOIN booking b ON p.passanger_id = b.passanger_id
+JOIN flight f ON b.flight_id = f.flight_id
+
+WHERE f.fare < (
+  SELECT AVG(fare)
+  FROM flight
+  WHERE source = f.source
+);
+
+____________________________________________________________________________________________________________________________________________________
+28---Retrieve the details of passengers who have booked a ticket for a flight with a fare higher than the fare of any flight departing from 
+the same source airport.
+===
+SELECT * FROM passanger
+WHERE passanger_id IN (
+  SELECT b.passanger_id
+  FROM booking b
+  WHERE b.flight_id IN (
+    SELECT f.flight_id
+    FROM flight f  
+    WHERE f.fare > (
+      SELECT t.fare
+      FROM flight t
+      WHERE f.source = t.destination
+        AND f.flight_id = t.flight_id
+    )
+  )
+);
+
+OR by me -->
+
+select * from passanger 
+where passanger_id in(select passanger_id from booking 
+                      where flight_id in (select flight_id  from flight 
+                                          where fare > (select fare from flight 
+                                                        where flight_id =(
+                                                                            select b1.flight_id 
+                                                                            from booking b1 
+                                                                            inner join booking b2 
+                                                                            on b1.source=b2.destination and b1.passanger_id=b2.passanger_id
+                                                                            ))));
+
+
+______________________________________________________________________________________________________________________________________________________
+29---Get the average fare of flights that have at least one booking made by a passenger with a 'KAUSHIK' last name.
+
+SELECT AVG(f.fare) AS average_fare
+FROM flight f
+JOIN booking b ON f.flight_id = b.flight_id
+JOIN passanger p ON b.passanger_id = p.passanger_id
+WHERE p.lastname = 'KAUSHIK';
+
+
+
+
+________________________________________________________________________________________________________________________________________________________
+
+30--Retrieve the details of passengers who have booked a ticket for a flight with a fare higher than the fare of any flight departing from the same date.
+
+SELECT p.*
+FROM passanger p
+JOIN booking b ON p.passanger_id = b.passanger_id
+
+JOIN flight f ON b.flight_id = f.flight_id
+ WHERE f.fare > ALL (
+  SELECT fare
+  FROM flight
+  WHERE DATE(departure_date) = DATE(f.departure_date)
+);
+    
+_____________________________________________________________________________________________________________________________________________________
+
+31--Get the highest fare among flights that have at least one booking made by a passenger with a specific first name.
+
+____________________________________________________________________________________________________________________________________________________
+
+32--specific date of booking 15 
+
+
+
